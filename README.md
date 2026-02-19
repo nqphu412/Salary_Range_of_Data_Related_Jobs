@@ -11,4 +11,5 @@ This project analyzes a global data-jobs dataset from [Kaggle](https://www.kaggl
   - `matplotlib` – data visualization  
   - `scikit-learn` – preprocessing, model selection, and evaluation  
   - `xgboost` – main predictive model  
-  - `requests` – for data fetching from APIs if needed 
+  - `requests` – for data fetching from APIs if needed
+  - `joblib` – for saving model in order to be used in the website
