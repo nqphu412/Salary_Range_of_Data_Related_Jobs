@@ -221,10 +221,11 @@ async function predictSalary() {
   const endOutput = await endSession.run({ 'input': tensor });
 
   // Convert from log into money form
-  const salaryStart = Math.expm1(startOutput['variable'].data[0]);
-  const salaryEnd = Math.expm1(endOutput['variable'].data[0]);
+  const salaryStart = Math.expm1(Math.min(startOutput['variable'].data[0], endOutput['variable'].data[0]));
+  const salaryEnd = Math.expm1(Math.max(startOutput['variable'].data[0], endOutput['variable'].data[0]));
 
   const resultZone = document.getElementById('result');
   resultZone.innerHTML = `Predicted salary: ${salaryStart} - ${salaryEnd} AUD`;
 };
+
 
