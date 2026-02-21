@@ -128,8 +128,6 @@ function updateUserFeatures(userFeatureID) {
   let element = document.getElementById(userFeatureID);
   let value = element.value;
 
-  if (userFeatureID === 'country') console.log(element);
-
   // For ownership, when it allows null value
   if (userFeatureID === 'ownership' && value === '') {
     // Only need to reset ownership
@@ -227,5 +225,6 @@ async function predictSalary() {
   const resultZone = document.getElementById('result');
   resultZone.innerHTML = `Predicted salary: ${salaryStart} - ${salaryEnd} AUD`;
 };
+
 
 
