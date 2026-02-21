@@ -209,8 +209,8 @@ function showZone3() {
 
 async function predictSalary() {
   // Load models
-  const startSession = await ort.InferenceSession.create('salary_start_model.onnx');
-  const endSession = await ort.InferenceSession.create('salary_end_model.onnx');
+  const startSession = await ort.InferenceSession.create('models/salary_start_model.onnx');
+  const endSession = await ort.InferenceSession.create('models/salary_end_model.onnx');
 
   // Convert userFeatures to array in correct order
   const featuresArray = Object.values(userFeatures);
@@ -225,4 +225,5 @@ async function predictSalary() {
   const salaryEnd = Math.expm1(endOutput['variable'].data[0]);
 
   alert(`Predicted salary: ${salaryStart} - ${salaryEnd} AUD`);
+
 };
