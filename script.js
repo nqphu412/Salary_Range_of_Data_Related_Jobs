@@ -224,6 +224,7 @@ async function predictSalary() {
   const salaryStart = Math.expm1(startOutput['variable'].data[0]);
   const salaryEnd = Math.expm1(endOutput['variable'].data[0]);
 
-  alert(`Predicted salary: ${salaryStart} - ${salaryEnd} AUD`);
-
+  const resultZone = document.getElementById('result');
+  resultZone.innerHTML = `Predicted salary: ${salaryStart} - ${salaryEnd} AUD`;
 };
+
