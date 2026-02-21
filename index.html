@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Salary Prediction</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+  </head>
+  <body>
+    <h1>Data Salary Predictor</h1>
+
+    <div class="zone1">
+      <!-- Job Title -->
+      <label>Job Title<span style="color: rgb(224, 12, 12);">*</span>:</label>
+      <select id="job_title" onchange="updateUserFeatures('job_title')">
+        <option value="" disabled selected hidden></option>
+        <option value="data scientist">Data Scientist</option>
+        <option value="machine learning engineer">Machine Learning Engineer</option>
+      </select>
+      <br><br>
+      
+      <!-- Seniority -->
+      <label>Seniority Level<span style="color: rgb(224, 12, 12);">*</span>:</label>
+      <select id="seniority_level" onchange="updateUserFeatures('seniority_level')">
+        <option value="" disabled selected hidden></option>
+        <option value="1">Junior</option>
+        <option value="2">Mid-level</option>
+        <option value="3">Senior</option>
+        <option value="4">Leader</option>
+      </select>
+      <br><br>
+      
+      <!-- Status -->
+      <label>Work Status<span style="color: rgb(224, 12, 12);">*</span>:</label>
+      <select id="status" onchange="updateUserFeatures('status')">
+        <option value="" disabled selected hidden></option>
+        <option value="hybrid">Hybrid</option>
+        <option value="on-site">On-site</option>
+        <option value="remote">Remote</option>
+      </select>
+      <br><br>
+      
+      <!-- Industry -->
+      <label>Industry<span style="color: rgb(224, 12, 12);">*</span>:</label>
+      <select id="industry" onchange="updateUserFeatures('industry')">
+        <option value="" disabled selected hidden></option>
+        <option value="Technology">Technology</option>
+        <option value="Finance">Finance</option>
+        <option value="Healthcare">Healthcare</option>
+        <option value="Retail">Retail</option>
+        <option value="Education">Education</option>
+        <option value="Energy">Energy</option>
+        <option value="Manufacturing">Manufacturing</option>
+        <option value="Logistics">Logistics</option>
+      </select>
+      <br><br>
+
+    </div> 
+    
+    <div class="zone2 hidden">
+  <!-- Continent -->
+      <label>Continent<span style="color: rgb(224, 12, 12);">*</span>:</label>
+      <select id="continent" onchange="
+        updateUserFeatures('continent'); 
+        showZone3();">
+        <option value="" disabled selected hidden></option>
+        <option value="Asia">Asia</option>
+        <option value="Europe">Europe</option>
+        <option value="North America">North America</option>
+        <option value="Others">Others</option>
+      </select>
+      <br><br>
+    </div>
+    
+    <div class="zone3 hidden">
+  <!-- Country -->
+      <label>Country<span style="color: rgb(224, 12, 12);">*</span>:</label>
+      <select id="country" onchange="updateUserFeatures('country')"></select>
+      <br><br>
+
+      <!-- Ownership -->
+      <label>Company Ownership:</label>
+      <select id="ownership" onchange="updateUserFeatures('ownership')">
+        <option value=""></option>
+        <option value="Private">Private</option>
+        <option value="Public">Public</option>
+      </select>
+      <br><br>
+    </div>
+    
+    <!-- 33 Skills -->
+    <h3>Skills</h3>
+    
+    <label><input type="checkbox" id="spark" value="spark" onchange="updateSkill('spark')"> Spark</label>
+    <label><input type="checkbox" id="r" value="r" onchange="updateSkill('r')"> R</label>
+    <label><input type="checkbox" id="python" value="python" onchange="updateSkill('python')"> Python</label>
+    <label><input type="checkbox" id="scala" value="scala" onchange="updateSkill('scala')"> Scala</label>
+    <label><input type="checkbox" id="machine learning" value="machine learning" onchange="updateSkill('machine learning')">
+      Machine Learning</label>
+    <label><input type="checkbox" id="tensorflow" value="tensorflow" onchange="updateSkill('tensorflow')">
+      TensorFlow</label>
+    <label><input type="checkbox" id="sql" value="sql" onchange="updateSkill('sql')"> SQL</label>
+    <label><input type="checkbox" id="aws" value="aws" onchange="updateSkill('aws')"> AWS</label>
+    <label><input type="checkbox" id="git" value="git" onchange="updateSkill('git')"> Git</label>
+    <label><input type="checkbox" id="docker" value="docker" onchange="updateSkill('docker')"> Docker</label>
+    <label><input type="checkbox" id="gcp" value="gcp" onchange="updateSkill('gcp')"> GCP</label>
+    <label><input type="checkbox" id="kubernetes" value="kubernetes" onchange="updateSkill('kubernetes')">
+      Kubernetes</label>
+    <label><input type="checkbox" id="deep learning" value="deep learning" onchange="updateSkill('deep learning')"> Deep
+      Learning</label>
+    <label><input type="checkbox" id="scikit-learn" value="scikit-learn" onchange="updateSkill('scikit-learn')">
+      Scikit-Learn</label>
+    <label><input type="checkbox" id="pytorch" value="pytorch" onchange="updateSkill('pytorch')"> PyTorch</label>
+    <label><input type="checkbox" id="keras" value="keras" onchange="updateSkill('keras')"> Keras</label>
+    <label><input type="checkbox" id="java" value="java" onchange="updateSkill('java')"> Java</label>
+    <label><input type="checkbox" id="pandas" value="pandas" onchange="updateSkill('pandas')"> Pandas</label>
+    <label><input type="checkbox" id="powerbi" value="powerbi" onchange="updateSkill('powerbi')"> Power BI</label>
+    <label><input type="checkbox" id="tableau" value="tableau" onchange="updateSkill('tableau')"> Tableau</label>
+    <label><input type="checkbox" id="hadoop" value="hadoop" onchange="updateSkill('hadoop')"> Hadoop</label>
+    <label><input type="checkbox" id="azure" value="azure" onchange="updateSkill('azure')"> Azure</label>
+    <label><input type="checkbox" id="airflow" value="airflow" onchange="updateSkill('airflow')"> Airflow</label>
+    <label><input type="checkbox" id="numpy" value="numpy" onchange="updateSkill('numpy')"> NumPy</label>
+    <label><input type="checkbox" id="neural network" value="neural network" onchange="updateSkill('neural network')">
+      Neural Network</label>
+    <label><input type="checkbox" id="matplotlib" value="matplotlib" onchange="updateSkill('matplotlib')">
+      Matplotlib</label>
+    <label><input type="checkbox" id="database" value="database" onchange="updateSkill('database')"> Database</label>
+    <label><input type="checkbox" id="amazon" value="amazon" onchange="updateSkill('amazon')"> Amazon</label>
+    <label><input type="checkbox" id="scipy" value="scipy" onchange="updateSkill('scipy')"> SciPy</label>
+    <label><input type="checkbox" id="linux" value="linux" onchange="updateSkill('linux')"> Linux</label>
+    <label><input type="checkbox" id="bash" value="bash" onchange="updateSkill('bash')"> Bash</label>
+    <label><input type="checkbox" id="opencv" value="opencv" onchange="updateSkill('opencv')"> OpenCV</label>
+    <label><input type="checkbox" id="sklearn" value="sklearn" onchange="updateSkill('sklearn')"> Sklearn</label>
+    
+    <br><br>
+    
+    <button id="predictButton" onclick="predictSalary()" class="hidden">Predict Salary</button>
+    
+    <h2 id="result"></h2>
+
+    <script src="script.js"></script>
+  </body>
+</html>
