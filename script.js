@@ -82,46 +82,92 @@ let userFeatures = {
   linux: 0,
   bash: 0,
   opencv: 0,
-  sklearn: 0
+  sklearn: 0,
 };
+
+const skillSets = Object.keys(userFeatures).slice(41);
+console.log(skillSets);
+
+const skillColumn = document.querySelector(".column2");
+skillColumn.innerHTML = "<h3>Skillset you can offer</h3>";
+skillSets.forEach((skill) => {
+  const container = document.createElement("div");
+  container.classList.add("skill-container");
+  container.innerHTML = `<label>
+          ${skill}</label><input
+            type="checkbox"
+            id="${skill}"
+            value="${skill}"
+            onchange="updateSkill('${skill}')"
+          />`;
+  skillColumn.appendChild(container);
+});
 
 let flagDone = {
   job_title: 0,
   seniority_level: 0,
-  status: 0, 
-  industry: 0, 
+  status: 0,
+  industry: 0,
   // ownership doesnt need to fill if information is not available
   continent: 0,
-  country: 0
-}
+  country: 0,
+};
 
-const features_zone1 = ['job_title', 'seniority_level', 'status', 'industry'];
-const zone2 = document.querySelector('.zone2');
-const zone3 = document.querySelector('.zone3');
+const features_zone1 = ["job_title", "seniority_level", "status", "industry"];
+const zone2 = document.querySelector(".zone2");
+const zone3 = document.querySelector(".zone3");
 
 const predictBtn = document.getElementById("predictButton");
 
-const titleInput = document.getElementById('job_title');
-const seniorityInput = document.getElementById('seniority_level');
-const statusInput = document.getElementById('status');
-const industryInput = document.getElementById('industry');
-const continentInput = document.getElementById('continent');
-const countryInput = document.getElementById('country');
-const ownershipInput = document.getElementById('ownership');
+const titleInput = document.getElementById("job_title");
+const seniorityInput = document.getElementById("seniority_level");
+const statusInput = document.getElementById("status");
+const industryInput = document.getElementById("industry");
+const continentInput = document.getElementById("continent");
+const countryInput = document.getElementById("country");
+const ownershipInput = document.getElementById("ownership");
 
 const continentCountries = {
-  "Asia": ['CN', 'IN', 'JP', 'SG', 'TW'],
-  "Europe": ['AT', 'CH', 'DE', 'DK', 'EE', 'ES', 'FR', 'GB', 'IE', 'IT', 'NL', 'SE'],
+  Asia: ["CN", "IN", "JP", "SG", "TW"],
+  Europe: [
+    "AT",
+    "CH",
+    "DE",
+    "DK",
+    "EE",
+    "ES",
+    "FR",
+    "GB",
+    "IE",
+    "IT",
+    "NL",
+    "SE",
+  ],
   "North America": ["US", "CA"],
-  "Others": ['AU', 'BR'] // Oceania and South America
+  Others: ["AU", "BR"], // Oceania and South America
 };
 const countryNames = {
-  "AT": "Austria", "AU": "Australia", "BR": "Brazil", "CA": "Canada",
-  "CH": "Switzerland", "CN": "China", "DE": "Germany", "DK": "Denmark",
-  "EE": "Estonia", "ES": "Spain", "FR": "France", "GB": "United Kingdom",
-  "IE": "Ireland", "IN": "India", "IT": "Italy", "JP": "Japan",
-  "NL": "Netherlands", "SE": "Sweden", "SG": "Singapore", "TW": "Taiwan",
-  "US": "United States"
+  AT: "Austria",
+  AU: "Australia",
+  BR: "Brazil",
+  CA: "Canada",
+  CH: "Switzerland",
+  CN: "China",
+  DE: "Germany",
+  DK: "Denmark",
+  EE: "Estonia",
+  ES: "Spain",
+  FR: "France",
+  GB: "United Kingdom",
+  IE: "Ireland",
+  IN: "India",
+  IT: "Italy",
+  JP: "Japan",
+  NL: "Netherlands",
+  SE: "Sweden",
+  SG: "Singapore",
+  TW: "Taiwan",
+  US: "United States",
 };
 
 function updateUserFeatures(userFeatureID) {
@@ -129,7 +175,7 @@ function updateUserFeatures(userFeatureID) {
   let value = element.value;
 
   // For ownership, when it allows null value
-  if (userFeatureID === 'ownership' && value === '') {
+  if (userFeatureID === "ownership" && value === "") {
     // Only need to reset ownership
     for (let otherFeatureSameID in userFeatures) {
       if (otherFeatureSameID.startsWith(userFeatureID)) {
@@ -137,11 +183,12 @@ function updateUserFeatures(userFeatureID) {
       }
     }
     return;
-  };
+  }
 
-  if (userFeatureID === 'seniority_level') {
+  if (userFeatureID === "seniority_level") {
     userFeatures[userFeatureID] = Number(value);
-  } else { // job_title, status, industry, ownership, continent, country
+  } else {
+    // job_title, status, industry, ownership, continent, country
     for (let otherFeatureSameID in userFeatures) {
       // Reset all other dummies to 0
       if (otherFeatureSameID.startsWith(userFeatureID)) {
@@ -149,82 +196,91 @@ function updateUserFeatures(userFeatureID) {
       }
     }
     // Only set 1 to the chosen value
-    userFeatures[userFeatureID + '_' + value] = 1;
+    userFeatures[userFeatureID + "_" + value] = 1;
   }
-  
+
   flagDone[userFeatureID] = 1;
-  if (!features_zone1.some(feature => flagDone[feature] === 0)) {
-    zone2.classList.remove('hidden')
+  if (!features_zone1.some((feature) => flagDone[feature] === 0)) {
+    zone2.classList.remove("hidden");
   }
 
   showPredictButton();
-};
+}
 
 function updateSkill(skillID) {
   let skillCheckBox = document.getElementById(skillID);
   userFeatures[skillID] = skillCheckBox.checked ? 1 : 0;
-};
+}
 
 function showPredictButton() {
   if (!Object.values(flagDone).includes(0)) {
-    predictBtn.classList.remove('hidden');
-  } else { predictBtn.classList.add('hidden'); }
-};
+    predictBtn.classList.remove("hidden");
+  } else {
+    predictBtn.classList.add("hidden");
+  }
+}
 
 function showZone3() {
-  if (flagDone['continent'] === 0) {
-    zone3.classList.add('hidden');
+  if (flagDone["continent"] === 0) {
+    zone3.classList.add("hidden");
     return;
   }
-  
-  zone3.classList.remove('hidden'); 
-  
+
+  zone3.classList.remove("hidden");
+
   const selectedContinent = continentInput.value;
   const relevantCountries = continentCountries[selectedContinent]; // e.g US, BR, IN, etc
 
-  countryInput.innerHTML = '';
-  
-  const defaultOption = document.createElement('option');
-  defaultOption.value = '';
+  countryInput.innerHTML = "";
+
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
   defaultOption.disabled = true;
   defaultOption.hidden = true;
   defaultOption.selected = true;
   countryInput.appendChild(defaultOption);
 
-  relevantCountries.forEach(countryCode => {
-    const option = document.createElement('option');
+  relevantCountries.forEach((countryCode) => {
+    const option = document.createElement("option");
     option.value = countryCode;
     option.textContent = countryNames[countryCode];
     countryInput.appendChild(option);
   });
 
   // In case choose continent again
-  flagDone['country'] = 0;
+  flagDone["country"] = 0;
   showPredictButton();
 }
 
-
-
 async function predictSalary() {
   // Load models
-  const startSession = await ort.InferenceSession.create('models/salary_start_model.onnx');
-  const endSession = await ort.InferenceSession.create('models/salary_end_model.onnx');
+  const startSession = await ort.InferenceSession.create(
+    "models/salary_start_model.onnx",
+  );
+  const endSession = await ort.InferenceSession.create(
+    "models/salary_end_model.onnx",
+  );
 
   // Convert userFeatures to array in correct order
   const featuresArray = Object.values(userFeatures);
-  const tensor = new ort.Tensor('float32', Float32Array.from(featuresArray), [1, 74]);
+  const tensor = new ort.Tensor(
+    "float32",
+    Float32Array.from(featuresArray),
+    [1, 74],
+  );
 
   // Use the correct input name from ONNX
-  const startOutput = await startSession.run({ 'input': tensor });
-  const endOutput = await endSession.run({ 'input': tensor });
+  const startOutput = await startSession.run({ input: tensor });
+  const endOutput = await endSession.run({ input: tensor });
 
   // Convert from log into money form
-  const salaryStart = Math.expm1(Math.min(startOutput['variable'].data[0], endOutput['variable'].data[0]));
-  const salaryEnd = Math.expm1(Math.max(startOutput['variable'].data[0], endOutput['variable'].data[0]));
+  const salaryStart = Math.expm1(
+    Math.min(startOutput["variable"].data[0], endOutput["variable"].data[0]),
+  );
+  const salaryEnd = Math.expm1(
+    Math.max(startOutput["variable"].data[0], endOutput["variable"].data[0]),
+  );
 
-  const resultZone = document.getElementById('result');
-  resultZone.innerHTML = `Predicted salary: ${salaryStart} - ${salaryEnd} AUD`;
-};
-
-
-
+  const resultZone = document.getElementById("result");
+  resultZone.innerHTML = `Predicted salary: ${salaryStart.toFixed(2)} - ${salaryEnd.toFixed(2)} AUD`;
+}
