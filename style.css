@@ -83,8 +83,9 @@ h3 {
   align-items: center;
   border: 1px solid rgba(177, 177, 177, 0.203);
   border-radius: 20px;
-  background-color: #b2fafd;
+  background-color: #b2fafd4b;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
 .skill-container input {
@@ -94,7 +95,7 @@ h3 {
 .skill-container svg {
   height: 20px;
   width: 20px;
-  transition: all 0.3s;
+  transition: all 0.2s;
   fill: #66666697;
   flex-shrink: 0;
 }
@@ -105,6 +106,14 @@ h3 {
 
 .skill-container input:checked ~ svg {
   fill: #bfaf37;
+}
+
+.skill-container input:checked ~ div {
+  color: #730606;
+}
+
+.skill-container:has(input:checked) {
+  background-color: #b2fafd;
 }
 
 input {
